@@ -1,0 +1,18 @@
+function [ encoded ] = Encode( s, Hs )
+%Encode LDPC encode
+x = s * Hs';
+p = zeros(size(s, 1), LDPC.mB);
+p(:, 1) = x(:, 1);
+for ii = 2:LDPC.mB
+    p(:, (ii - 1) * LDPC.z + 1) = xor( x(:, (ii - 1) * LDPC.z + 1), p(:, (ii - 2) * LDPC.z + 1) );
+end
+
+for ii = 2: LDPC.z
+    p(:, ii) = xor( x(:, ii) , p(:, (LDPC.mB - 1)*LDPC.z + ii -1) );
+    for jj = 2:LDPC.mB
+        p(:, 
+
+
+encoded = [p, s];
+end
+

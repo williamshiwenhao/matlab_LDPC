@@ -1,0 +1,8 @@
+%%
+
+%%
+Generate code
+function s = Source(k)
+s = rand
+end
+%%

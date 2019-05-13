@@ -1,0 +1,8 @@
+load('Matrix(2016,1008)Block56.mat')
+H = generateH(H_block);%sparse matrix
+Hs = H(:, LDPC.mB*LDPC.z+1:end);
+times = 1e3;
+for ii = 1:times
+    s = randi(1, LDPC.kB * LDPC.z , [0,1]);
+    c = Encode(s, Hs);
+    
