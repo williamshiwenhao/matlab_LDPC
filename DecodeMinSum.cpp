@@ -48,17 +48,13 @@ void SumProduct(double* coded, double* decoded, int* column, int*  row, size_t c
 		minValue.assign(row[HSize - 1], 1000);
 		subMinValue.assign(row[HSize - 1], 1000);
 		sgn.assign(row[HSize - 1], true);
-		sum.assign(codedSize, 0);
 		for (int i = 0; i < HSize; ++i) {
-			sum[column[i] - 1] += u[i];
-		}
-		for (int i = 0; i < HSize; ++i) {
-			v[i] = coded[column[i] - 1] + sum[column[i] - 1] - u[i];
+			v[i] = decoded[column[i] - 1] - u[i];
 		}
 		for (int i = 0; i < HSize; ++i) {
 			int idx = row[i] - 1;
 			if (abs(v[i]) < subMinValue[idx]) {
-				if (v[i] < minValue[row[i] - 1]) {
+				if (abs(v[i]) < minValue[idx]) {
 					subMinValue[idx] = minValue[idx];
 					minValue[idx] = abs(v[i]);
 				}
@@ -72,16 +68,19 @@ void SumProduct(double* coded, double* decoded, int* column, int*  row, size_t c
 		}
 		for (int i = 0; i < HSize; ++i) {
 			int idx = row[i] - 1;
-			double value = (abs(v[i]) == minValue[idx]) ? minValue[idx] : subMinValue[idx];
-			if (value < beta)
-				value = 0;
-			value *= alpha;
-			bool sign = sgn[idx];;
-			if (v[i] < 0)
-				sign = !sign;
-			if (!sign)
-				value = -value;
-			u[i] = value;
+			double value = (abs(v[i]) == minValue[idx]) ? subMinValue[idx] : minValue[idx];
+            value -= beta;
+			if (value <= 0)
+				u[i] = 0;
+            else{
+                value *= alpha;
+                bool sign = sgn[idx];;
+                if (v[i] < 0)
+                   	sign = !sign;
+                if (!sign)
+                    value = -value;
+                u[i] = value;
+            }
 		}
 		memcpy(decoded, coded, codedSize * sizeof(double));
 		for (int i = 0; i < HSize; ++i) {
@@ -130,9 +129,9 @@ void mexFunction(int nlhs, mxArray *plhs[],
 	if (!(alpha >= 0 && alpha <= 1)) {
 		mexErrMsgIdAndTxt("MyToolBox:DecodeMinSum:Input", "alpha should be (0, 1]");
 	}
-	if (!(beta >= 0 && beta <= 1)) {
-		mexErrMsgIdAndTxt("MyToolBox:DecodeMinSum:Input", "beta should be (0, 1]");
-	}
+// 	if (!(beta >= 0 && beta <= 1)) {
+// 		mexErrMsgIdAndTxt("MyToolBox:DecodeMinSum:Input", "beta should be (0, 1]");
+// 	}
 	plhs[0] = mxCreateDoubleMatrix(1, (mwSize)codedSize, mxREAL);
 	double* decoded = mxGetPr(plhs[0]);
 	SumProduct(coded, decoded, column, row, codedSize, rowSize, alpha, beta);

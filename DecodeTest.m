@@ -13,8 +13,7 @@ for ii = 1:times
     %%
     %Encode
     s = randi([0,1], 1, LDPC.kB * LDPC.z);
-%     coded = Encode(s, Hs);
-    coded = EnCode2(H, s, LDPC.z);
+    coded = Encode(s, Hs);
     codeError = mod(coded* H', 2);
     %%
     %BPSK

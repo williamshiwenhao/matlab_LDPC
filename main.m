@@ -6,5 +6,6 @@ Hs = H(:, LDPC.mB*LDPC.z+1:end);
 % mex DecodeMinSum.cpp
 [column, row, ~] = find(H');
 column = int32(column);row=int32(row);
-SNR = -4:-1;
+SNR = -4:1:-1;
+errorFrame
 %%
