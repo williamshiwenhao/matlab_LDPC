@@ -13,10 +13,6 @@ for line=1:LDPC.kB
     end
 end
 %Get mat a
-a = zeros(LDPC.z);
-for ii = 2:LDPC.z
-    a(ii, ii -1) = 1;
-end
-H(1:LDPC.z, (LDPC.kB-1)*LDPC.z+1:LDPC.kB*LDPC.z) = a;
+H(1,LDPC.mB*LDPC.z) = 0;
 end
 

@@ -23,7 +23,7 @@ for ii = 1:times
     afterChannel = awgn(modulated, SNR+10*log10(2));
     Lc = afterChannel .* 4 .* (10^(SNR / 10) );%SNR to liner
     decoded = DecodeSumProduct(Lc, column, row);
-    decoded2 = DecodeMinSum(Lc, column, row, [1.0; 1.0]);
+    decoded2 = DecodeMinSum(Lc, column, row, [1.0; 0]);
     y = decoded(:, LDPC.mB*LDPC.z + 1:end);
     y2 = decoded(:, LDPC.mB*LDPC.z + 1:end);
     errorBit = sum(sum(y~=s));

@@ -73,6 +73,9 @@ void SumProduct(double* coded, double* decoded, int* column, int*  row, size_t c
 		for (int i = 0; i < HSize; ++i) {
 			int idx = row[i] - 1;
 			double value = (abs(v[i]) == minValue[idx]) ? minValue[idx] : subMinValue[idx];
+			if (value < beta)
+				value = 0;
+			value *= alpha;
 			bool sign = sgn[idx];;
 			if (v[i] < 0)
 				sign = !sign;
